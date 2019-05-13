@@ -2,7 +2,6 @@ import pygame
 from numpy import interp
 
 pygame.init()
-pygame.font.init()
 leveys = 600
 korkeus = 600
 
