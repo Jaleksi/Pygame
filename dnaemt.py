@@ -20,8 +20,8 @@ class Viiva:
     def piirto(self):
         self.pos = [int(self.x), int(self.y)]
         self.pos2 = [int(300+self.vali), int(self.y)]
-        pygame.draw.circle(display, self.color, self.pos, 3, 0)
-        pygame.draw.circle(display, self.color, self.pos2, 3, 0)
+        pygame.draw.circle(display, (0,0,0), self.pos, 3, 0)
+        pygame.draw.circle(display, (0,0,0), self.pos2, 3, 0)
         pygame.draw.line(display, self.color, self.pos, self.pos2, 1)
 
     def varivaihto(self):
