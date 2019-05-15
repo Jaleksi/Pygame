@@ -11,37 +11,49 @@ clock = pygame.time.Clock()
 palkit = []
 
 class Palkki:
-    def __init__(self, x, y):
+    def __init__(self, x, y, speed, suunta, raja):
         self.x = x
         self.y = y
         self.leveys = 5
-        if(self.y >= 150):
-            self.speed = randint(-3, -1)
-        else:
-            self.speed = randint(1, 3)
-
+        self.speed = speed
+        self.suunta = suunta
+        self.raja = raja
 
     def piirto(self):
         self.korkeus = 150-self.y
         self.pos = [self.x, self.y, self.leveys, self.korkeus]
         self.color1 = interp(abs(self.korkeus), [0, 150], [235, 20])
         self.color2 = interp(self.x, [0, 600], [20, 235])
-        pygame.draw.rect(display, [100, self.color1, self.color2] , self.pos, 0)
+        pygame.draw.rect(display, [self.color1, self.color1, self.color2] , self.pos, 0)
+
+    def suuntavaihto(self):
+        if(self.suunta == 1):
+            self.suunta = 0
+        else:
+            self.suunta = 1
 
     def heilu(self):
-        if(self.y > randint(200,300)):
-            self.speed = randint(-3, -1)
-        elif(self.y < randint(0, 100)):
-            self.speed = randint(1, 3)
-
-        self.y += self.speed
+        if(self.suunta == 1):
+            if(self.y < self.raja):
+                self.suuntavaihto()
+                self.speed = randint(1, 2)
+                self.raja = randint(150, 250)
+            else:
+                self.y -= self.speed
+        else:
+            if(self.y > self.raja):
+                self.suuntavaihto()
+                self.speed = randint(1, 2)
+                self.raja = randint(50, 150)
+            else:
+                self.y += self.speed
 
 def luopalkki(maara):
     x = int(leveys/maara)
     y = int(korkeus/2)
 
     for i in range(maara):
-        palkit.append(Palkki(x, randint(0,300)))
+        palkit.append(Palkki(x, randint(0,150), randint(1, 2), 0, randint(50, 150)))
         x += int(leveys/maara)
 
 def inputt():
