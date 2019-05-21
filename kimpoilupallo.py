@@ -5,7 +5,7 @@ pygame.init()
 leveys = 400
 korkeus = 400
 display = pygame.display.set_mode((leveys, korkeus))
-pygame.display.set_caption("Juttu")
+pygame.display.set_caption("[Juttu]")
 clock = pygame.time.Clock()
 
 class Ruutu:
