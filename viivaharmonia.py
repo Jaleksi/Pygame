@@ -2,13 +2,10 @@ import pygame
 from random import randint
 from numpy import interp
 
-#
-# INPUT: SPACE/VÄLILYÖNTI, uusi kuvio.
-#
 
 pygame.init()
-leveys = 300
-korkeus = 300
+leveys = 600
+korkeus = 600
 
 display = pygame.display.set_mode((korkeus, leveys))
 pygame.display.set_caption("Title")
@@ -17,9 +14,10 @@ clock = pygame.time.Clock()
 pisteet = []
 
 class Piste:
-    def __init__(self, x, y):
+    def __init__(self, x, y, nopeus):
         self.x = x
         self.y = y
+        self.nopeus = nopeus
         self.pos = [self.x, self.y]
 
     def piirto(self):
@@ -31,29 +29,21 @@ class Piste:
         self.pos = [self.x, self.y]
         for piste in pisteet:
             eta = abs(self.x - piste.x) + abs(self.y - piste.y)
-            color = int(interp(eta, [0, 100], [0, 255]))
-            if(eta < 100 and self != piste):
+            if(50 < eta < 150 and self != piste):
+                color = int(interp(eta, [0, 150], [0, 255]))
                 pygame.draw.line(display, [color, color, color], self.pos, piste.pos, 1)
 
     def paskatuusiksi(self):
-        self.x = randint(30, 270)
-        self.y = randint(30, 270)
+        self.x = randint(30, 570)
+        self.y = randint(30, 570)
 
     def liiku(self):
-        self.x += randint(-1, 1)
-        self.y += randint(-1, 1)
-        if(self.x > 300):
-            self.x = 300
-        elif(self.x < 0):
-            self.x = 0
-        if(self.y > 300):
-            self.y = 300
-        elif(self.y < 0):
-            self.y = 0
-
+        self.x += self.nopeus
+        if(self.x >= 600 or self.x <= 0):
+            self.nopeus *= -1
 def luopiste(maara):
     for i in range(maara):
-        pisteet.append(Piste(randint(30, 270), randint(30, 270)))
+        pisteet.append(Piste(randint(30, 570), randint(30, 570), randint(-2, 2)))
 
 
 
@@ -72,14 +62,14 @@ def inputt():
 
 
 def main():
-    luopiste(41)
+    luopiste(121)
     while(True):
         inputt()
         display.fill(pygame.Color("white"))
         for piste in pisteet:
 #            piste.piirto()
-            piste.matka()
             piste.liiku()
+            piste.matka()
         pygame.display.update()
         clock.tick(30)
 
