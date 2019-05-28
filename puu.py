@@ -11,7 +11,7 @@ pygame.init()
 leveys = 800
 korkeus = 600
 display = pygame.display.set_mode((leveys, korkeus))
-pygame.display.set_caption("Buu")
+pygame.display.set_caption("Puu")
 clock = pygame.time.Clock()
 oksat = []
 
