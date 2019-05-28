@@ -9,6 +9,7 @@ display = pygame.display.set_mode((korkeus, leveys))
 pygame.display.set_caption("ZzzZzz")
 clock = pygame.time.Clock()
 
+
 class Viiva:
     def __init__(self, x, y):
         self.x = x
@@ -19,8 +20,8 @@ class Viiva:
     def piirto(self):
         self.pos = [int(self.x), int(self.y)]
         self.pos2 = [int(300+self.vali), int(self.y)]
-        pygame.draw.circle(display, (0,0,0), self.pos, 3, 0)
-        pygame.draw.circle(display, (0,0,0), self.pos2, 3, 0)
+        pygame.draw.circle(display, (0), self.pos, 3, 0)
+        pygame.draw.circle(display, (0), self.pos2, 3, 0)
         pygame.draw.line(display, self.color, self.pos, self.pos2, 1)
 
     def varivaihto(self):
@@ -28,6 +29,7 @@ class Viiva:
             self.color = pygame.Color("red")
         else:
             self.color = pygame.Color("black")
+
     def heilu(self):
         self.vali = 300-self.x
         self.vauhti = interp(self.vali, [0, 100], [5, 1])
@@ -43,11 +45,12 @@ class Viiva:
         else:
             self.x += self.vauhti
 
+
 def inputt():
     for event in pygame.event.get():
-            if(event.type == pygame.QUIT):
-                pygame.quit()
-                exit()
+        if(event.type == pygame.QUIT):
+            pygame.quit()
+            exit()
 
 
 def main():
@@ -67,6 +70,7 @@ def main():
             viiva.piirto()
         pygame.display.update()
         clock.tick(30)
+
 
 if(__name__ == "__main__"):
     main()
