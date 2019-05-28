@@ -1,5 +1,4 @@
-import pygame
-import math
+import pygame, math
 from random import randint
 from numpy import interp
 
