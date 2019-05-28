@@ -14,6 +14,7 @@ display = pygame.display.set_mode((leveys, korkeus))
 pygame.display.set_caption("Puu")
 clock = pygame.time.Clock()
 oksat = []
+kirsikat = []
 
 
 class Oksa:
@@ -27,11 +28,16 @@ class Oksa:
         self.dead = dead
 
     def piirto(self):
-        if(self.koko <= 1 or self.x < 0 or self.x > 800 or self.y < 0 or self.y > 600):
-            self.dead = 1
+        if(self.dead == 0):
+            if(self.koko <= 1):
+                self.dead = 1
+                kirsikat.append(Kirsikka(self.x, self.y, 1, randint(1, 6), [255, 150, randint(155,255)]))
+
+            elif(self.x < 0 or self.x > 800 or self.y < 0 or self.y > 600):
+                self.dead = 1
 
         for sijainti in self.sij:
-            pygame.draw.circle(display, (255, 255, 255), sijainti, int(self.koko), 0)
+            pygame.draw.circle(display, (0), sijainti, int(self.koko), 0)
 
     def halkaisu(self):
         for i in range(2):
@@ -53,6 +59,22 @@ class Oksa:
         self.kulma += self.vaihto
 
 
+class Kirsikka:
+    def __init__(self, x, y, koko, maxkoko, vari):
+        self.x = x
+        self.y = y
+        self.koko = koko
+        self.maxkoko = maxkoko
+        self.vari = vari
+
+    def piirto(self):
+        pygame.draw.circle(display, self.vari, [self.x, self.y], self.koko, 0)
+
+    def kasvu(self):
+        if(self.koko <= self.maxkoko):
+            self.koko += 1
+
+
 def inbut():
     for event in pygame.event.get():
         if(event.type == pygame.QUIT):
@@ -61,6 +83,7 @@ def inbut():
         if(event.type == pygame.KEYDOWN):
             if(event.key == pygame.K_SPACE):
                 oksat.clear()
+                kirsikat.clear()
                 alku()
 
 
@@ -72,13 +95,16 @@ def main():
     alku()
     while(True):
         inbut()
-        display.fill(pygame.Color("black"))
+        display.fill(pygame.Color("white"))
         for oksa in oksat:
             if(oksa.dead == 0):
                 oksa.liiku()
                 if(randint(0, 100) <= 3):
                     oksa.halkaisu()
             oksa.piirto()
+        for kirsikka in kirsikat:
+            kirsikka.piirto()
+            kirsikka.kasvu()
         clock.tick(30)
         pygame.display.update()
 
