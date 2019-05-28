@@ -16,19 +16,23 @@ class Viiva:
         self.y = y
         self.suunta = 0
         self.color = pygame.Color("black")
+        self.color2 = pygame.Color("red")
 
     def piirto(self):
         self.pos = [int(self.x), int(self.y)]
         self.pos2 = [int(300+self.vali), int(self.y)]
-        pygame.draw.circle(display, (0), self.pos, 3, 0)
-        pygame.draw.circle(display, (0), self.pos2, 3, 0)
-        pygame.draw.line(display, self.color, self.pos, self.pos2, 1)
+        pygame.draw.line(display, self.color, self.pos, [300, int(self.y)], 2)
+        pygame.draw.line(display, self.color2, [300, int(self.y)], self.pos2, 2)
+        pygame.draw.circle(display, self.color, self.pos, 3, 0)
+        pygame.draw.circle(display, self.color2, self.pos2, 3, 0)
 
     def varivaihto(self):
         if(self.color == pygame.Color("black")):
             self.color = pygame.Color("red")
+            self.color2 = pygame.Color("black")
         else:
             self.color = pygame.Color("black")
+            self.color2 = pygame.Color("red")
 
     def heilu(self):
         self.vali = 300-self.x
@@ -44,7 +48,6 @@ class Viiva:
             self.x -= self.vauhti
         else:
             self.x += self.vauhti
-
 
 def inputt():
     for event in pygame.event.get():
