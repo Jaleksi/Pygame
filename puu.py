@@ -4,7 +4,7 @@ from random import randint
 from numpy import interp
 
 #
-# INPUT: SPACE = NEW TREE.
+# INPUT: SPACE = NEW TREE
 #
 
 pygame.init()
