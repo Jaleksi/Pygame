@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+from random import choice
 
 
 pygame.init()
@@ -11,18 +11,31 @@ clock = pygame.time.Clock()
 gameon = False
 
 def inbut():
+    global gameon
     for event in pygame.event.get():
         if(event.type == pygame.QUIT):
             pygame.quit()
             exit()
         if(event.type == pygame.MOUSEBUTTONDOWN):
             for valinta in valinnat:
-                if(valinta.valittu == True and valinta.msg == "Uusi peli"):
+                if(valinta.valittu and valinta.msg == "Uusi peli"):
                     gameon = True
                     peli()
-        if(event.type == pygame.KEYDOWN):
-            if(event.key == pygame.K_LEFT):
-                pass
+        if(gameon):
+            if(event.type == pygame.KEYDOWN):
+                if(event.key == pygame.K_LEFT):
+                    mato.xnopeus = -10
+                    mato.ynopeus = 0
+                if(event.key == pygame.K_RIGHT):
+                    mato.xnopeus = 10
+                    mato.ynopeus = 0
+                if(event.key == pygame.K_UP):
+                    mato.ynopeus = -10
+                    mato.xnopeus = 0
+                if(event.key == pygame.K_DOWN):
+                    mato.ynopeus = 10
+                    mato.xnopeus = 0
+
 
 class Teksti:
     def __init__(self, msg, koko, x, y, vari):
@@ -70,40 +83,71 @@ def main():
 class Mato:
     def __init__(self, x, y):
         self.xnopeus = 0
-        self.ynopeus = 10
+        self.ynopeus = 0
         self.kokomato = []
         self.paa = pygame.Rect(x, y, 10, 10)
         self.kokomato.append(self.paa)
+        self.pituus = 1
 
     def matopiirto(self):
         for osa in self.kokomato:
-            pygame.draw.rect(display, (0, 255, 0), osa, 2)
+            pygame.draw.rect(display, (0, 255, 0), osa, 3)
 
     def matoliiku(self):
         uusipaa = pygame.Rect(self.paa.x + self.xnopeus,
                               self.paa.y + self.ynopeus,
                               10, 10)
-        if(uusipaa.x > 500):
+        if(uusipaa.x > 490):
             uusipaa.x = 0
         elif(uusipaa.x < 0):
-            uusipaa.x = 500
-        if(uusipaa.y > 500):
+            uusipaa.x = 490
+        if(uusipaa.y > 590):
             uusipaa.y = 100
         elif(uusipaa.y < 100):
-            uusipaa.y = 500
+            uusipaa.y = 590
 
         self.kokomato.insert(0, uusipaa)
         self.paa = uusipaa
-        self.kokomato.pop()
+        if(len(self.kokomato) > self.pituus):
+            self.kokomato.pop()
+
+
+    def matosyo(self):
+        if(self.paa.x == omena.omppu.x and self.paa.y == omena.omppu.y):
+            tmp = choice(omenapaikat)
+            omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
+            self.pituus += 1
+
+class Omena:
+    def __init__(self, sijainti):
+        self.omppu = pygame.Rect(sijainti[0], sijainti[1], 10, 10)
+
+    def omenapiirto(self):
+        pygame.draw.rect(display, (255, 0, 0), self.omppu, 3)
+
+
+omenapaikat = []
+ox = 0
+oy = 100
+for i in range(50):
+    for j in range(50):
+        omenapaikat.append([ox, oy])
+        ox += 10
+    oy += 10
+    ox = 0
+
+mato = Mato(0, 100)
+omena = Omena(choice(omenapaikat))
 
 
 def peli():
-    mato = Mato(0, 100)
     while(True):
         inbut()
         display.fill(pygame.Color("white"))
         mato.matoliiku()
+        mato.matosyo()
         mato.matopiirto()
+        omena.omenapiirto()
         clock.tick(10)
         pygame.display.update()
 
