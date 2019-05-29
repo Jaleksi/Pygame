@@ -18,9 +18,15 @@ def inbut():
             exit()
         if(event.type == pygame.MOUSEBUTTONDOWN):
             for valinta in valinnat:
-                if(valinta.valittu and valinta.msg == "Uusi peli"):
-                    gameon = True
-                    peli()
+                if(valinta.valittu):
+                    if(valinta.msg == "Uusi peli"):
+                        gameon = True
+                        peli()
+                    elif(valinta.msg == "Hiscores"):
+                        print("tulossa..")
+                    elif(valinta.msg == "Lopeta"):
+                        pygame.quit()
+                        exit()
         if(gameon):
             if(event.type == pygame.KEYDOWN):
                 if(event.key == pygame.K_LEFT):
@@ -56,16 +62,18 @@ class Teksti:
     def klik(self):
         mx, my = pygame.mouse.get_pos()
         self.x2, self.y2, self.w, self.h = self.rend.get_rect()
-        if(self.y-self.h/2 < my < self.y+self.h/2 and 200<mx<400):
+        if(self.y - self.h/2 < my < self.y + self.h/2 and 200 < mx < 400):
             self.vari = (0, 255, 0)
             self.valittu = True
         else:
             self.vari = (0, 0, 0)
             self.valittu = False
 
+
 valinnat = [Teksti("Uusi peli", 24, 0, 350, (0, 0, 0)),
             Teksti("Hiscores", 24, 0, 400, (0, 0, 0)),
             Teksti("Lopeta", 24, 0, 450, (0, 0, 0))]
+
 
 def main():
     while(True):
@@ -79,6 +87,7 @@ def main():
 
         clock.tick(10)
         pygame.display.update()
+
 
 class Mato:
     def __init__(self, x, y):
@@ -111,12 +120,12 @@ class Mato:
         if(len(self.kokomato) > self.pituus):
             self.kokomato.pop()
 
-
     def matosyo(self):
         if(self.paa.x == omena.omppu.x and self.paa.y == omena.omppu.y):
             tmp = choice(omenapaikat)
             omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
             self.pituus += 1
+
 
 class Omena:
     def __init__(self, sijainti):
@@ -139,6 +148,10 @@ for i in range(50):
 mato = Mato(0, 100)
 omena = Omena(choice(omenapaikat))
 
+def tulostaulu():
+    pygame.draw.rect(display, (200, 200, 200), [0, 0, 500, 100], 0)
+    Teksti("Syödyt omenat: "+str(mato.pituus-1), 24, 0, 50, (0,0,0)).piirto()
+
 
 def peli():
     while(True):
@@ -148,6 +161,7 @@ def peli():
         mato.matosyo()
         mato.matopiirto()
         omena.omenapiirto()
+        tulostaulu()
         clock.tick(10)
         pygame.display.update()
 
