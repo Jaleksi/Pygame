@@ -27,8 +27,8 @@ def inbut():
                     elif(valinta.msg == "Lopeta"):
                         pygame.quit()
                         exit()
-        if(gameon):
-            if(event.type == pygame.KEYDOWN):
+        if(event.type == pygame.KEYDOWN):
+            if(gameon):
                 if(event.key == pygame.K_LEFT):
                     mato.xnopeus = -10
                     mato.ynopeus = 0
@@ -41,7 +41,8 @@ def inbut():
                 if(event.key == pygame.K_DOWN):
                     mato.ynopeus = 10
                     mato.xnopeus = 0
-
+            else:
+                main()
 
 class Teksti:
     def __init__(self, msg, koko, x, y, vari):
@@ -76,6 +77,8 @@ valinnat = [Teksti("Uusi peli", 24, 0, 350, (0, 0, 0)),
 
 
 def main():
+    global mato
+    mato = Mato(0, 100)
     while(True):
         display.fill(pygame.Color("white"))
         inbut()
@@ -103,9 +106,15 @@ class Mato:
             pygame.draw.rect(display, (0, 255, 0), osa, 3)
 
     def matoliiku(self):
+        global gameon
         uusipaa = pygame.Rect(self.paa.x + self.xnopeus,
                               self.paa.y + self.ynopeus,
                               10, 10)
+        if(uusipaa in self.kokomato and self.ynopeus + self.xnopeus != 0):
+            mato.xnopeus = 0
+            mato.ynopeus = 0
+            gameon = False
+            loppu()
         if(uusipaa.x > 490):
             uusipaa.x = 0
         elif(uusipaa.x < 0):
@@ -150,20 +159,28 @@ omena = Omena(choice(omenapaikat))
 
 def tulostaulu():
     pygame.draw.rect(display, (200, 200, 200), [0, 0, 500, 100], 0)
-    Teksti("Syödyt omenat: "+str(mato.pituus-1), 24, 0, 50, (0,0,0)).piirto()
+    Teksti("Syödyt omenat: "+str(mato.pituus-1), 18, 0, 10, (0,0,0)).piirto()
 
-
+def loppu():
+    Teksti("PELI LOPPUI", 18, 0, 200, (0,0,0)).piirto()
+    Teksti("Paina jotain näppäintä palataksesi valikkoon", 18, 0, 250, (0,0,0)).piirto()
 def peli():
+    global gameon
     while(True):
-        inbut()
         display.fill(pygame.Color("white"))
-        mato.matoliiku()
-        mato.matosyo()
-        mato.matopiirto()
-        omena.omenapiirto()
+        inbut()
+        if(gameon):
+            mato.matoliiku()
+            mato.matosyo()
+            mato.matopiirto()
+            omena.omenapiirto()
+        else:
+            mato.matopiirto()
+            loppu()
         tulostaulu()
         clock.tick(10)
         pygame.display.update()
+
 
 
 
