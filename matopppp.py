@@ -124,12 +124,15 @@ class Mato:
         elif(uusipaa.y < 100):
             uusipaa.y = 590
         self.kokomato.insert(0, uusipaa)
-        omenapaikat.remove([uusipaa.x, uusipaa.y])
+        try:
+            omenapaikat.remove([uusipaa.x, uusipaa.y])
+        except ValueError:
+            pass
         self.paa = uusipaa
 
         print(len(omenapaikat))
         if(len(self.kokomato) > self.pituus):
-            omenapaikat.append([self.kokomato[-1][0], self.kokomato[-1][1]])
+            omenapaikat.append([self.kokomato[-1].x, self.kokomato[-1].y])
             self.kokomato.pop()
 
 
