@@ -88,7 +88,7 @@ def main():
             valinta.piirto()
             valinta.klik()
 
-        clock.tick(10)
+        clock.tick(30)
         pygame.display.update()
 
 
@@ -123,11 +123,16 @@ class Mato:
             uusipaa.y = 100
         elif(uusipaa.y < 100):
             uusipaa.y = 590
-
         self.kokomato.insert(0, uusipaa)
+        omenapaikat.remove([uusipaa.x, uusipaa.y])
         self.paa = uusipaa
+
+        print(len(omenapaikat))
         if(len(self.kokomato) > self.pituus):
+            omenapaikat.append([self.kokomato[-1][0], self.kokomato[-1][1]])
             self.kokomato.pop()
+
+
 
     def matosyo(self):
         if(self.paa.x == omena.omppu.x and self.paa.y == omena.omppu.y):
@@ -153,7 +158,6 @@ for i in range(50):
         ox += 10
     oy += 10
     ox = 0
-
 mato = Mato(0, 100)
 omena = Omena(choice(omenapaikat))
 
