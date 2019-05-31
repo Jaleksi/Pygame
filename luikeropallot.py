@@ -2,7 +2,7 @@ import pygame
 from random import randint
 
 #
-# INPUT: RIGHT MOUSE CLICK FOR NEW THING, C TO CLEAR.
+# INPUT: MOUSE CLICK FOR NEW THING, C TO CLEAR.
 #
 
 pygame.init()
