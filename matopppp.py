@@ -22,7 +22,7 @@ def inbut():
                     if(valinta.msg == "Uusi peli"):
                         gameon = True
                         peli()
-                    elif(valinta.msg == "Hiscores"):
+                    elif(valinta.msg == "Asetukset"):
                         print("tulossa..")
                     elif(valinta.msg == "Lopeta"):
                         pygame.quit()
@@ -41,6 +41,8 @@ def inbut():
                 if(event.key == pygame.K_DOWN):
                     mato.ynopeus = 10
                     mato.xnopeus = 0
+                if(event.key == pygame.K_SPACE):
+                    mato.kieli = True
             else:
                 main()
 
@@ -72,7 +74,7 @@ class Teksti:
 
 
 valinnat = [Teksti("Uusi peli", 24, 0, 350, (0, 0, 0)),
-            Teksti("Hiscores", 24, 0, 400, (0, 0, 0)),
+            Teksti("Asetukset", 24, 0, 400, (0, 0, 0)),
             Teksti("Lopeta", 24, 0, 450, (0, 0, 0))]
 
 
@@ -100,10 +102,17 @@ class Mato:
         self.paa = pygame.Rect(x, y, 10, 10)
         self.kokomato.append(self.paa)
         self.pituus = 1
+        self.kieli = False
 
     def matopiirto(self):
         for osa in self.kokomato:
             pygame.draw.rect(display, (0, 255, 0), osa, 3)
+
+        if(self.kieli):
+            pygame.draw.line(display, (255, 0, 0), self.kielistartPos, self.kieliendPos, 3)
+            pygame.draw.circle(display, (255,0,0), self.kieliendPos, 5, 0)
+            self.kieli = False
+
 
     def matoliiku(self):
         global gameon
@@ -130,24 +139,49 @@ class Mato:
             pass
         self.paa = uusipaa
 
-        print(len(omenapaikat))
         if(len(self.kokomato) > self.pituus):
             omenapaikat.append([self.kokomato[-1].x, self.kokomato[-1].y])
             self.kokomato.pop()
 
-
+        if(self.kieli):
+            if(abs(self.xnopeus) > abs(self.ynopeus)):
+                if(self.xnopeus > 0):
+                    #oikea
+                    self.kielistartPos = [self.paa.x+10, self.paa.y+5]
+                    self.kieliendPos = [self.paa.x+50, self.paa.y+5]
+                else:
+                    #Vasen
+                    self.kielistartPos = [self.paa.x, self.paa.y+5]
+                    self.kieliendPos = [self.paa.x-40, self.paa.y+5]
+            else:
+                if(self.ynopeus > 0):
+                    #alas
+                    self.kielistartPos = [self.paa.x+5, self.paa.y+10]
+                    self.kieliendPos = [self.paa.x+5, self.paa.y+50]
+                else:
+                    #ylos
+                    self.kielistartPos = [self.paa.x+5, self.paa.y]
+                    self.kieliendPos = [self.paa.x+5, self.paa.y-40]
 
     def matosyo(self):
+        if(self.kieli):
+            if(omena.omppu.y-10 < self.kieliendPos[1] < omena.omppu.y+20 and
+               omena.omppu.x-10 < self.kieliendPos[0] < omena.omppu.x+20):
+                tmp = choice(omenapaikat)
+                omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
+                self.pituus += 1
+
         if(self.paa.x == omena.omppu.x and self.paa.y == omena.omppu.y):
             tmp = choice(omenapaikat)
             omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
             self.pituus += 1
 
 
-class Omena:
-    def __init__(self, sijainti):
-        self.omppu = pygame.Rect(sijainti[0], sijainti[1], 10, 10)
 
+class Omena:
+    def __init__(self, sijainti, spessu):
+        self.omppu = pygame.Rect(sijainti[0], sijainti[1], 10, 10)
+        self.spessu = spessu
     def omenapiirto(self):
         pygame.draw.rect(display, (255, 0, 0), self.omppu, 3)
 
@@ -162,7 +196,7 @@ for i in range(50):
     oy += 10
     ox = 0
 mato = Mato(0, 100)
-omena = Omena(choice(omenapaikat))
+omena = Omena(choice(omenapaikat), False)
 
 def tulostaulu():
     pygame.draw.rect(display, (200, 200, 200), [0, 0, 500, 100], 0)
