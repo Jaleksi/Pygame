@@ -31,16 +31,16 @@ def inbut():
                         exit()
         if(event.type == pygame.KEYDOWN):
             if(gameon):
-                if(event.key == pygame.K_LEFT):
+                if(event.key == pygame.K_LEFT and mato.xnopeus != 10):
                     mato.xnopeus = -10
                     mato.ynopeus = 0
-                if(event.key == pygame.K_RIGHT):
+                if(event.key == pygame.K_RIGHT and mato.xnopeus != -10):
                     mato.xnopeus = 10
                     mato.ynopeus = 0
-                if(event.key == pygame.K_UP):
+                if(event.key == pygame.K_UP and mato.ynopeus != 10):
                     mato.ynopeus = -10
                     mato.xnopeus = 0
-                if(event.key == pygame.K_DOWN):
+                if(event.key == pygame.K_DOWN and mato.ynopeus != -10):
                     mato.ynopeus = 10
                     mato.xnopeus = 0
                 if(event.key == pygame.K_SPACE):
