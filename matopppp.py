@@ -1,6 +1,9 @@
 import pygame
-from random import choice
+from random import choice, randint
 
+#
+# INPUT = ARROW-KEYS TO MOVE AND SPACE TO USE SNAKE'S TONGUE.
+#
 
 pygame.init()
 leveys = 500
@@ -9,6 +12,7 @@ display = pygame.display.set_mode((leveys, korkeus))
 pygame.display.set_caption("Mato")
 clock = pygame.time.Clock()
 gameon = False
+
 
 def inbut():
     global gameon
@@ -22,8 +26,6 @@ def inbut():
                     if(valinta.msg == "Uusi peli"):
                         gameon = True
                         peli()
-                    elif(valinta.msg == "Asetukset"):
-                        print("tulossa..")
                     elif(valinta.msg == "Lopeta"):
                         pygame.quit()
                         exit()
@@ -44,7 +46,8 @@ def inbut():
                 if(event.key == pygame.K_SPACE):
                     mato.kieli = True
             else:
-                main()
+                if(event.key == pygame.K_m):
+                    main()
 
 class Teksti:
     def __init__(self, msg, koko, x, y, vari):
@@ -74,10 +77,15 @@ class Teksti:
 
 
 valinnat = [Teksti("Uusi peli", 24, 0, 350, (0, 0, 0)),
-            Teksti("Asetukset", 24, 0, 400, (0, 0, 0)),
             Teksti("Lopeta", 24, 0, 450, (0, 0, 0))]
 
-
+def menukuva():
+    x = 100
+    y = 200
+    for i in range(5):
+        pygame.draw.rect(display, (0,255,0), [x, y, 40, 40], 4)
+        x += 40
+    pygame.draw.rect(display, (255,0,0), [x+40, y, 40, 40], 4)
 def main():
     global mato
     mato = Mato(0, 100)
@@ -89,7 +97,7 @@ def main():
         for valinta in valinnat:
             valinta.piirto()
             valinta.klik()
-
+        menukuva()
         clock.tick(30)
         pygame.display.update()
 
@@ -164,18 +172,23 @@ class Mato:
                     self.kieliendPos = [self.paa.x+5, self.paa.y-40]
 
     def matosyo(self):
+        uusiomena = False
         if(self.kieli):
-            if(omena.omppu.y-10 < self.kieliendPos[1] < omena.omppu.y+20 and
-               omena.omppu.x-10 < self.kieliendPos[0] < omena.omppu.x+20):
-                tmp = choice(omenapaikat)
-                omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
-                self.pituus += 1
+            if(omena.omppu.y-5 < self.kieliendPos[1] < omena.omppu.y+15 and
+               omena.omppu.x-5 < self.kieliendPos[0] < omena.omppu.x+15):
+                uusiomena = True
 
         if(self.paa.x == omena.omppu.x and self.paa.y == omena.omppu.y):
+            uusiomena = True
+
+        if(uusiomena):
             tmp = choice(omenapaikat)
             omena.omppu = pygame.Rect(tmp[0], tmp[1], 10, 10)
             self.pituus += 1
-
+            if(randint(0, 100) > 80):
+                omena.spessu = True
+            else:
+                omena.spessu = False
 
 
 class Omena:
@@ -183,7 +196,16 @@ class Omena:
         self.omppu = pygame.Rect(sijainti[0], sijainti[1], 10, 10)
         self.spessu = spessu
     def omenapiirto(self):
-        pygame.draw.rect(display, (255, 0, 0), self.omppu, 3)
+        if(self.spessu):
+            self.vari = (0, 0, 255)
+            if(0 < self.omppu.x < 490):
+                self.omppu.x += randint(-1, 1)*10
+            if(100 < self.omppu.y < 590):
+                self.omppu.y += randint(-1, 1)*10
+        else:
+            self.vari = (255, 0, 0)
+
+        pygame.draw.rect(display, self.vari, self.omppu, 3)
 
 
 omenapaikat = []
@@ -198,13 +220,19 @@ for i in range(50):
 mato = Mato(0, 100)
 omena = Omena(choice(omenapaikat), False)
 
+
 def tulostaulu():
-    pygame.draw.rect(display, (200, 200, 200), [0, 0, 500, 100], 0)
+    pygame.draw.rect(display, (224, 224, 224), [0, 0, 500, 100], 0)
     Teksti("Syödyt omenat: "+str(mato.pituus-1), 18, 0, 10, (0,0,0)).piirto()
+    if(omena.spessu):
+        Teksti("Voi ei, villi omena!", 24, 0, 40, (0,0,0)).piirto()
+
 
 def loppu():
     Teksti("PELI LOPPUI", 18, 0, 200, (0,0,0)).piirto()
-    Teksti("Paina jotain näppäintä palataksesi valikkoon", 18, 0, 250, (0,0,0)).piirto()
+    Teksti("Paina M-näppäintä palataksesi valikkoon", 18, 0, 250, (0,0,0)).piirto()
+
+
 def peli():
     global gameon
     while(True):
