@@ -41,13 +41,11 @@ class Piste:
         self.x += self.nopeus
         if(self.x >= 600 or self.x <= 0):
             self.nopeus *= -1
+
+
 def luopiste(maara):
     for i in range(maara):
         pisteet.append(Piste(randint(30, 570), randint(30, 570), randint(-2, 2)))
-
-
-
-
 
 
 def inputt():
@@ -67,7 +65,6 @@ def main():
         inputt()
         display.fill(pygame.Color("white"))
         for piste in pisteet:
-#            piste.piirto()
             piste.liiku()
             piste.matka()
         pygame.display.update()
