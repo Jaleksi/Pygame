@@ -8,7 +8,7 @@ pygame.display.set_caption("pp")
 clock = pygame.time.Clock()
 
 #
-#INPUT: hiiri + välilyönti
+# INPUT: hiiri + välilyönti
 #
 
 
@@ -16,6 +16,7 @@ class Palikka:
     palikat = []
     aika = 0
     aaltoilu = False
+
     def __init__(self, x, y, a, b):
         self.x = x
         self.y = y
@@ -38,7 +39,6 @@ class Palikka:
         self.rect = [self.x, self.y, self.a, self.b]
         pygame.draw.rect(display, self.vari, self.rect, 0)
 
-
     def veny(self, maara):
         self.y -= maara
         self.b += maara*2
@@ -55,13 +55,13 @@ class Palikka:
             if(self.y < korkeus/2):
                 self.veny(-1)
 
-
     def aalto():
         vuoro = int((pygame.time.get_ticks() - Palikka.aika)*4/1000)
         try:
             Palikka.palikat[vuoro].veny(10)
         except Exception:
             Palikka.aaltoilu = False
+
 
 def main():
     Palikka.luo(12)
@@ -79,7 +79,7 @@ def main():
         for palikka in Palikka.palikat:
             palikka.piirto()
             palikka.hiiri(hiirix, hiiriy)
-        if(Palikka.aaltoilu == True):
+        if(Palikka.aaltoilu):
             Palikka.aalto()
         pygame.display.update()
         clock.tick(20)
