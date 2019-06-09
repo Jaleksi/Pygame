@@ -20,25 +20,18 @@ class Pallo:
         uy = 300
         us = 1
         for i in range(1, x):
-            pallot.append(Pallo(int(ux), uy, 1))
+            pallot.append(Pallo(ux, uy, 1))
             ux += leveys/x
-            if(us == 1):
-                uy += 15
-            else:
-                uy -= 15
-            if(uy == 300):
-                us = 0
-            elif(uy == 270):
-                us = 1
+            uy += 30
 
     def piirto(self):
-        self.pos = [self.x, self.y]
+        self.pos = [int(self.x), int(self.y)]
         pygame.draw.circle(display, (0, 0, 0), self.pos, int(self.koko), 0)
 
     def tarkistus(self):
-        if(self.y >= 330):
+        if(self.y >= 360):
             self.suunta = 1
-        elif(self.y <= 270):
+        elif(self.y <= 240):
             self.suunta = 0
 
     def palloSuunta(self):
@@ -49,11 +42,11 @@ class Pallo:
 
     def heiluYlos(self):
         self.y -= 3
-        self.koko = int(interp(abs(self.y - 300), [0, 30], [3, 7]))
+        self.koko = int(interp(abs(self.y - 300), [0, 60], [3, 7]))
 
     def heiluAlas(self):
         self.y += 3
-        self.koko = int(interp(abs(self.y - 300), [0, 30], [11, 7]))
+        self.koko = int(interp(abs(self.y - 300), [0, 60], [11, 7]))
 
 
 def main():
