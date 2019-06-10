@@ -49,6 +49,7 @@ def inbut():
                 if(event.key == pygame.K_m):
                     main()
 
+
 class Teksti:
     def __init__(self, msg, koko, x, y, vari):
         self.msg = msg
@@ -79,13 +80,16 @@ class Teksti:
 valinnat = [Teksti("Uusi peli", 24, 0, 350, (0, 0, 0)),
             Teksti("Lopeta", 24, 0, 450, (0, 0, 0))]
 
+
 def menukuva():
     x = 100
     y = 200
     for i in range(5):
-        pygame.draw.rect(display, (0,255,0), [x, y, 40, 40], 4)
+        pygame.draw.rect(display, (0, 255, 0), [x, y, 40, 40], 4)
         x += 40
-    pygame.draw.rect(display, (255,0,0), [x+40, y, 40, 40], 4)
+    pygame.draw.rect(display, (255, 0, 0), [x+40, y, 40, 40], 4)
+
+
 def main():
     global mato
     mato = Mato(0, 100)
@@ -121,7 +125,6 @@ class Mato:
             pygame.draw.circle(display, (255,0,0), self.kieliendPos, 5, 0)
             self.kieli = False
 
-
     def matoliiku(self):
         global gameon
         uusipaa = pygame.Rect(self.paa.x + self.xnopeus,
@@ -141,6 +144,7 @@ class Mato:
         elif(uusipaa.y < 100):
             uusipaa.y = 590
         self.kokomato.insert(0, uusipaa)
+
         try:
             omenapaikat.remove([uusipaa.x, uusipaa.y])
         except ValueError:
@@ -154,20 +158,20 @@ class Mato:
         if(self.kieli):
             if(abs(self.xnopeus) > abs(self.ynopeus)):
                 if(self.xnopeus > 0):
-                    #oikea
+                    # oikea
                     self.kielistartPos = [self.paa.x+10, self.paa.y+5]
                     self.kieliendPos = [self.paa.x+50, self.paa.y+5]
                 else:
-                    #Vasen
+                    # Vasen
                     self.kielistartPos = [self.paa.x, self.paa.y+5]
                     self.kieliendPos = [self.paa.x-40, self.paa.y+5]
             else:
                 if(self.ynopeus > 0):
-                    #alas
+                    # alas
                     self.kielistartPos = [self.paa.x+5, self.paa.y+10]
                     self.kieliendPos = [self.paa.x+5, self.paa.y+50]
                 else:
-                    #ylos
+                    # ylos
                     self.kielistartPos = [self.paa.x+5, self.paa.y]
                     self.kieliendPos = [self.paa.x+5, self.paa.y-40]
 
@@ -195,6 +199,7 @@ class Omena:
     def __init__(self, sijainti, spessu):
         self.omppu = pygame.Rect(sijainti[0], sijainti[1], 10, 10)
         self.spessu = spessu
+
     def omenapiirto(self):
         if(self.spessu):
             self.vari = (0, 0, 255)
@@ -249,8 +254,6 @@ def peli():
         tulostaulu()
         clock.tick(10)
         pygame.display.update()
-
-
 
 
 if(__name__ == "__main__"):
