@@ -10,6 +10,7 @@ pygame.display.set_caption("Title")
 clock = pygame.time.Clock()
 palkit = []
 
+
 class Palkki:
     def __init__(self, x, y, speed, suunta, raja):
         self.x = x
@@ -24,7 +25,8 @@ class Palkki:
         self.pos = [self.x, self.y, self.leveys, self.korkeus]
         self.color1 = interp(abs(self.korkeus), [0, 150], [235, 20])
         self.color2 = interp(self.x, [0, 600], [20, 235])
-        pygame.draw.rect(display, [self.color1, self.color1, self.color2] , self.pos, 0)
+        pygame.draw.rect(display, [self.color1, self.color1, self.color2],
+                         self.pos, 0)
 
     def suuntavaihto(self):
         if(self.suunta == 1):
@@ -48,19 +50,20 @@ class Palkki:
             else:
                 self.y += self.speed
 
+
 def luopalkki(maara):
     x = int(leveys/maara)
-    y = int(korkeus/2)
-
     for i in range(maara):
-        palkit.append(Palkki(x, randint(0,150), randint(1, 2), 0, randint(50, 150)))
+        palkit.append(Palkki(x, randint(0, 150),
+                             randint(1, 2), 0, randint(50, 150)))
         x += int(leveys/maara)
+
 
 def inputt():
     for event in pygame.event.get():
-            if(event.type == pygame.QUIT):
-                pygame.quit()
-                exit()
+        if(event.type == pygame.QUIT):
+            pygame.quit()
+            exit()
 
 
 def main():
@@ -73,6 +76,7 @@ def main():
             palkki.heilu()
         pygame.display.update()
         clock.tick(30)
+
 
 if(__name__ == "__main__"):
     main()
