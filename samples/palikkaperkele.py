@@ -63,18 +63,22 @@ class Palikka:
             Palikka.aaltoilu = False
 
 
+def inbut():
+    for event in pygame.event.get():
+        if(event.type == pygame.QUIT):
+            pygame.quit()
+            exit()
+        if(event.type == pygame.KEYDOWN):
+            if(event.key == pygame.K_SPACE):
+                Palikka.aaltoilu = True
+                Palikka.aika = pygame.time.get_ticks()
+
+
 def main():
     Palikka.luo(12)
     while(True):
+        inbut()
         hiirix, hiiriy = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if(event.type == pygame.QUIT):
-                pygame.quit()
-                exit()
-            if(event.type == pygame.KEYDOWN):
-                if(event.key == pygame.K_SPACE):
-                    Palikka.aaltoilu = True
-                    Palikka.aika = pygame.time.get_ticks()
         display.fill(pygame.Color("white"))
         for palikka in Palikka.palikat:
             palikka.piirto()
@@ -82,7 +86,7 @@ def main():
         if(Palikka.aaltoilu):
             Palikka.aalto()
         pygame.display.update()
-        clock.tick(20)
+        clock.tick(40)
 
 
 if(__name__ == "__main__"):
