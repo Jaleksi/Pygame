@@ -10,10 +10,9 @@ clock = pygame.time.Clock()
 
 
 class Pallo:
-    def __init__(self, x, y, vari):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.vari = vari
         self.vauhti = 3
         self.xsuunta = 1
         self.ysuunta = 0
@@ -26,7 +25,7 @@ class Pallo:
             sij[2][2] += 10
 
     def liiku(self):
-        self.loc.append([self.x, self.y, [250, self.vari, self.vari]])
+        self.loc.append([self.x, self.y, [250, 0, 0]])
 
         if(len(self.loc) > 25):
             self.loc.pop(0)
@@ -67,7 +66,7 @@ def logic(entity):
 
 
 def main():
-    pallo = Pallo(177, 140, 0)
+    pallo = Pallo(177, 140)
     while(True):
         inputt()
         display.fill(pygame.Color("white"))
