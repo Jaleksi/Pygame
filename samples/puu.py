@@ -91,20 +91,25 @@ def alku():
     oksat.append(Oksa(400, 600, math.pi, 25, 0, 0))
 
 
+def growTree(seed, berry):
+    for oksa in seed:
+        if(oksa.dead == 0):
+            oksa.liiku()
+            if(randint(0, 100) <= 3):
+                oksa.halkaisu()
+        oksa.piirto()
+    for kirsikka in berry:
+        kirsikka.piirto()
+        kirsikka.kasvu()
+
+
+
 def main():
     alku()
     while(True):
         inbut()
         display.fill(pygame.Color("white"))
-        for oksa in oksat:
-            if(oksa.dead == 0):
-                oksa.liiku()
-                if(randint(0, 100) <= 3):
-                    oksa.halkaisu()
-            oksa.piirto()
-        for kirsikka in kirsikat:
-            kirsikka.piirto()
-            kirsikka.kasvu()
+        growTree(oksat, kirsikat)
         clock.tick(30)
         pygame.display.update()
 
