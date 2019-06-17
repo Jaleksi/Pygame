@@ -1,0 +1,6 @@
+Package               Version   
+--------------------- ----------
+matplotlib            3.0.3     
+nemo-emblems          4.0.2     
+numpy                 1.16.2    
+pygame                1.9.4     
