@@ -1,5 +1,5 @@
 import pygame
-import random
+from random import randint
 
 pygame.init()
 leveys = 400
@@ -7,6 +7,7 @@ korkeus = 400
 display = pygame.display.set_mode((leveys, korkeus))
 pygame.display.set_caption("[Juttu]")
 clock = pygame.time.Clock()
+
 
 class Ruutu:
     def __init__(self, x, y, vari):
@@ -17,7 +18,8 @@ class Ruutu:
     def piirto(self):
         pygame.draw.rect(display, self.vari, [self.x, self.y, 10, 10])
 
-class Pallo(Ruutu):
+
+class Pallo:
     def __init__(self, x, y, xsuunta, ysuunta):
         self.x = x
         self.y = y
@@ -35,44 +37,51 @@ class Pallo(Ruutu):
             self.y -= 1
 
     def pallopiirto(self):
-        pygame.draw.circle(display, (0,0,0), [self.x, self.y], 3, 0)
+        pygame.draw.circle(display, (0, 0, 0), [self.x, self.y], 3, 0)
+
+
+def logic(ruudut, pallo):
+    for ruutu in ruudut:
+        ruutu.piirto()
+    pallo.meno()
+    pallo.pallopiirto()
+
+    for ruutu in ruudut:
+        if(pallo.x+3 >= ruutu.x and pallo.y+3 >= ruutu.y):
+            if(pallo.x-3 <= ruutu.x+10 and pallo.y-3 <= ruutu.y+10):
+                if(pallo.x+3 == ruutu.x or pallo.x-3 == ruutu.x+10):
+                    if(pallo.xsuunta == 1):
+                        pallo.xsuunta = 0
+                    else:
+                        pallo.xsuunta = 1
+                elif(pallo.y+3 == ruutu.y or pallo.y-3 == ruutu.y+10):
+                    if(pallo.ysuunta == 1):
+                        pallo.ysuunta = 0
+                    else:
+                        pallo.ysuunta = 1
+                ruudut.remove(ruutu)
+                break
+
+
+def inputt():
+    for event in pygame.event.get():
+        if(event.type == pygame.QUIT):
+            pygame.quit()
+            exit()
+
 
 def main():
     ruudut = []
     for i in range(40):
         for j in range(40):
-            variz = [random.randint(50, 200), random.randint(50, 200), random.randint(50, 200)]
+            variz = [randint(50, 200), randint(50, 200), randint(50, 200)]
             ruudut.append(Ruutu((korkeus//40*i), (leveys//40*j), variz))
 
     pallo = Pallo(188, 233, 1, 0)
-
-
     while(True):
-        for event in pygame.event.get():
-            if(event.type == pygame.QUIT):
-                pygame.quit()
-                exit()
+        inputt()
         display.fill(pygame.Color("white"))
-        for ruutu in ruudut:
-            ruutu.piirto()
-        pallo.meno()
-        pallo.pallopiirto()
-
-        for ruutu in ruudut:
-            if(pallo.x+3 >= ruutu.x and pallo.y+3 >= ruutu.y):
-                if(pallo.x-3 <= ruutu.x+10 and pallo.y-3 <= ruutu.y+10):
-                    if(pallo.x+3 == ruutu.x or pallo.x-3 == ruutu.x+10):
-                        if(pallo.xsuunta == 1):
-                            pallo.xsuunta = 0
-                        else:
-                            pallo.xsuunta = 1
-                    elif(pallo.y+3 == ruutu.y or pallo.y-3 == ruutu.y+10):
-                        if(pallo.ysuunta == 1):
-                            pallo.ysuunta = 0
-                        else:
-                            pallo.ysuunta = 1
-                    ruudut.remove(ruutu)
-                    break
+        logic(ruudut, pallo)
         clock.tick(50)
         pygame.display.update()
 
