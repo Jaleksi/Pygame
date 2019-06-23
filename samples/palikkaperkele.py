@@ -1,5 +1,4 @@
 import pygame
-from random import randint
 pygame.init()
 leveys = 800
 korkeus = 600
@@ -30,7 +29,7 @@ class Palikka:
         y = korkeus/2
         a = 50
         b = 100
-        for i in range(maara):
+        for _ in range(maara):
             Palikka.palikat.append(Palikka(x, y, a, b))
             x += 60
 
