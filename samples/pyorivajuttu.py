@@ -19,7 +19,7 @@ class Pallo:
         ux = leveys/x
         uy = 300
         us = 1
-        for i in range(1, x):
+        for _ in range(1, x):
             pallot.append(Pallo(ux, uy, 1))
             ux += leveys/x
             uy += 30
