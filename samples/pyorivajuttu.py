@@ -15,10 +15,10 @@ class Pallo:
         self.x = x
         self.y = y
         self.suunta = suunta
+
     def luoPallo(x):
         ux = leveys/x
         uy = 300
-        us = 1
         for _ in range(1, x):
             pallot.append(Pallo(ux, uy, 1))
             ux += leveys/x
